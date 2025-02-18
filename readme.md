@@ -8,6 +8,8 @@ The course for anyone with a fair bit of PowerShell scripting experience that wa
 
 ---
 
+
+
 ## More Reading
 
 - [PowerShell Documentation](https://docs.microsoft.com/en-us/powershell/)
