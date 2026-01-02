@@ -4,7 +4,8 @@ function Add-CourseUser {
         $DatabaseFile = "$PSScriptRoot\..\MyLabFile.csv",
 
         [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
+        # [ValidateNotNullOrEmpty()]
+        [ValidatePattern({ '^[A-Z][\w\-\s]*$' }, ErrorMessage = 'Name is in an incorrect format')]
         [string]$Name,
 
         [Parameter(Mandatory)]
