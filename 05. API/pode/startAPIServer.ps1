@@ -6,32 +6,23 @@ Start-PodeServer {
     Add-PodeEndpoint -Address localhost -Port 666 -Protocol Http
 
     Add-PodeRoute -Method Get -Path '/api' -ScriptBlock {
-        $invokeSplat = @{}
-        
-        if (-not ([string]::IsNullOrEmpty($WebEvent.Query['fruit']))) {
-            [string[]]$Fruit = $WebEvent.Query['fruit'].split(',')
-            $invokeSplat.Add('Fruit', $Fruit)
-        }
 
-        if (-not ([string]::IsNullOrEmpty($WebEvent.Query['icons']))) {
-            $invokeSplat.Add('icons', $true)
+        if (-not ([string]::IsNullOrEmpty($WebEvent.Query['Name']))) {
+            [string]$Name = $WebEvent.Query['Name']
+            $res = . $PSScriptRoot\MyApi.ps1 -Name $Name
         }
-                
-        if (-not ([string]::IsNullOrEmpty($WebEvent.Query['sort']))) {
-            $invokeSplat.Add('sort', $true)
+        elseif (-not ([string]::IsNullOrEmpty($WebEvent.Query['Age']))) {
+            [int]$Age = $WebEvent.Query['Age']
+            $res = . $PSScriptRoot\MyApi.ps1 -Age $Age
         }
-
-        if (-not ([string]::IsNullOrEmpty($WebEvent.Query['reversesort']))) {
-            $invokeSplat.Add('ReverseSort', $true)
-        }
-
-        if ($invokeSplat.Count -gt 0) {
-            $res = . $PSScriptRoot\MyApi.ps1 @invokeSplat
+        elseif (-not ([string]::IsNullOrEmpty($WebEvent.Query['Color']))) {
+            [string]$Color = $WebEvent.Query['Color']
+            $res = . $PSScriptRoot\MyApi.ps1 -Color $Color
         }
         else {
             $res = . $PSScriptRoot\MyApi.ps1
         }
-
+        
         Write-PodeJsonResponse -Value @{
             result = $res
         }
