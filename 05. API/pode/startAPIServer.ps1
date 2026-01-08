@@ -27,4 +27,31 @@ Start-PodeServer {
             result = $res
         }
     }
+
+    
+    Add-PodeRoute -Method Get -Path '/post' -ScriptBlock {
+
+        if ([string]::IsNullOrEmpty($WebEvent.Query['Name'])) {
+            Write-PodeJsonResponse -Value @{
+                result = 'Missing parameter Name'
+            } -StatusCode 400
+        }
+        elseif ([string]::IsNullOrEmpty($WebEvent.Query['Age'])) {
+            Write-PodeJsonResponse -Value @{
+                result = 'Missing parameter Age'
+            } -StatusCode 400
+        }
+        elseif ([string]::IsNullOrEmpty($WebEvent.Query['Color'])) {
+            Write-PodeJsonResponse -Value @{
+                result = 'Missing parameter Color'
+            } -StatusCode 400
+        }
+        else {
+            & $PSScriptRoot\MyApiSet.ps1 -Name $($WebEvent.Query['Name']) -Age $($WebEvent.Query['Age']) -Color $($WebEvent.Query['Color'])
+            Write-PodeJsonResponse -Value @{
+                result = $res
+            }
+            
+        }
+    }
 }
